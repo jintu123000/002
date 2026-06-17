@@ -1,10 +1,26 @@
-# Build outputs
+# Build outputs (GCC)
 build/
+build_keil/
 *.o
 *.elf
 *.hex
 *.bin
 *.map
+*.crf
+*.d
+*.dep
+*.lnp
+*.lst
+*.htm
+
+# Keil specific outputs
+*.uvoptx
+*.uvguix.*
+JLinkLog.txt
+*.axf
+*.iex
+*.sct_backup
+RTE/
 
 # IDE files
 .project
@@ -12,6 +28,7 @@ build/
 .cproject
 *.launch
 .vscode/
+*.scvd
 
 # OS files
 .DS_Store

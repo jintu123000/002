@@ -1,6 +1,10 @@
 #
 # Makefile for STM32F103C8T6 + FreeRTOS LED Blink
 #
+# 双平台支持:
+#   - GCC (arm-none-eabi-gcc): make / make clean / make flash
+#   - Keil MDK-5: 打开 Project/firmware.uvprojx
+#
 
 # Toolchain
 CC      = arm-none-eabi-gcc

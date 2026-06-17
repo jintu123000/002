@@ -8,7 +8,11 @@
 
 #include "cmsis_version.h"
 #include "cmsis_compiler.h"
-#include "cmsis_gcc.h"
+
+/* Only include GCC-specific intrinsics for GCC/Clang */
+#if defined(__GNUC__) || defined(__clang__)
+  #include "cmsis_gcc.h"
+#endif
 
 #ifdef __cplusplus
 extern "C" {
