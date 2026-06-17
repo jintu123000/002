@@ -266,14 +266,14 @@ void vPortExitCritical(void)
 uint32_t ulPortSetInterruptMask(void)
 {
   uint32_t ulState;
-  ulState = __get_PRIMASK();
+  __asm { MRS ulState, PRIMASK }
   __disable_irq();
   return ulState;
 }
 
 void vPortClearInterruptMask(uint32_t ulNewMask)
 {
-  __set_PRIMASK(ulNewMask);
+  __asm { MSR PRIMASK, ulNewMask }
 }
 
 /*-----------------------------------------------------------*/
