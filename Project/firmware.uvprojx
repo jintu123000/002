@@ -234,11 +234,11 @@
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
             <RepFail>0</RepFail>
-            <useFile>0</useFile>
+            <useFile>1</useFile>
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\STM32F103C8Tx_FLASH.sct</ScatterFile>
+            <ScatterFile>STM32F103C8Tx_FLASH.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
