@@ -10,9 +10,47 @@
 #include <stdint.h>
 
 /*
+ * Arm Compiler 5 (armcc — Keil MDK)
+ */
+#if defined (__CC_ARM)
+  #ifndef __ASM
+    #define __ASM            __asm
+  #endif
+  #ifndef __INLINE
+    #define __INLINE         __inline
+  #endif
+  #ifndef __STATIC_INLINE
+    #define __STATIC_INLINE  static __inline
+  #endif
+  #ifndef __STATIC_FORCEINLINE
+    #define __STATIC_FORCEINLINE static __forceinline
+  #endif
+  #ifndef __NO_RETURN
+    #define __NO_RETURN      __declspec(noreturn)
+  #endif
+  #ifndef __USED
+    #define __USED           __attribute__((used))
+  #endif
+  #ifndef __WEAK
+    #define __WEAK           __attribute__((weak))
+  #endif
+  #ifndef __PACKED
+    #define __PACKED         __attribute__((packed))
+  #endif
+  #ifndef __PACKED_STRUCT
+    #define __PACKED_STRUCT  __packed struct
+  #endif
+  #ifndef __UNALIGNED_UINT32
+    #define __UNALIGNED_UINT32(x) (*((__packed uint32_t *)(x)))
+  #endif
+  #ifndef __ALIGNED
+    #define __ALIGNED(x)     __attribute__((aligned(x)))
+  #endif
+
+/*
  * Arm Compiler 6 (armclang)
  */
-#if defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+#elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
   #ifndef __ASM
     #define __ASM            __asm
   #endif

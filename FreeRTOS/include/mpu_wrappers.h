@@ -8,7 +8,15 @@
 
 /* No MPU: all definitions are just the bare symbol */
 #ifndef portFORCE_INLINE
-  #define portFORCE_INLINE inline __attribute__((always_inline))
+  #if defined(__CC_ARM)
+    /* ARM Compiler 5 — use __forceinline keyword */
+    #define portFORCE_INLINE __forceinline
+  #elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    /* ARM Compiler 6 — supports GCC-style attributes */
+    #define portFORCE_INLINE inline __attribute__((always_inline))
+  #else
+    #define portFORCE_INLINE inline __attribute__((always_inline))
+  #endif
 #endif
 
 #ifndef PRIVILEGED_FUNCTION

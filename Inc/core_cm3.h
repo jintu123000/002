@@ -9,9 +9,11 @@
 #include "cmsis_version.h"
 #include "cmsis_compiler.h"
 
-/* Only include GCC-specific intrinsics for GCC/Clang */
+/* Include compiler-specific intrinsics */
 #if defined(__GNUC__) || defined(__clang__)
   #include "cmsis_gcc.h"
+#elif defined(__CC_ARM)
+  #include "cmsis_armcc.h"
 #endif
 
 #ifdef __cplusplus
@@ -156,14 +158,14 @@ typedef enum IRQn
  *                NVIC Inline Functions
  ******************************************************************************/
 
-__attribute__((always_inline)) __STATIC_INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
+__STATIC_FORCEINLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
 {
   if ((int32_t)(IRQn) >= 0) {
     NVIC->ISER[(((uint32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)IRQn) & 0x1FUL));
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE void NVIC_DisableIRQ(IRQn_Type IRQn)
+__STATIC_FORCEINLINE void NVIC_DisableIRQ(IRQn_Type IRQn)
 {
   if ((int32_t)(IRQn) >= 0) {
     NVIC->ICER[(((uint32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)IRQn) & 0x1FUL));
@@ -172,7 +174,7 @@ __attribute__((always_inline)) __STATIC_INLINE void NVIC_DisableIRQ(IRQn_Type IR
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE void NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
+__STATIC_FORCEINLINE void NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
 {
   if ((int32_t)(IRQn) >= 0) {
     NVIC->IP[((uint32_t)IRQn)] = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & 0xFFUL);
@@ -181,7 +183,7 @@ __attribute__((always_inline)) __STATIC_INLINE void NVIC_SetPriority(IRQn_Type I
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE uint32_t NVIC_GetPriority(IRQn_Type IRQn)
+__STATIC_FORCEINLINE uint32_t NVIC_GetPriority(IRQn_Type IRQn)
 {
   if ((int32_t)(IRQn) >= 0) {
     return ((uint32_t)NVIC->IP[((uint32_t)IRQn)] >> (8U - __NVIC_PRIO_BITS));
@@ -190,7 +192,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t NVIC_GetPriority(IRQn_Ty
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE void NVIC_SystemReset(void)
+__STATIC_FORCEINLINE void NVIC_SystemReset(void)
 {
   __DSB();
   SCB->AIRCR = (uint32_t)((0x5FAUL << SCB_AIRCR_VECTKEY_Pos) |
@@ -201,14 +203,14 @@ __attribute__((always_inline)) __STATIC_INLINE void NVIC_SystemReset(void)
 }
 
 /* __NVIC prefixed versions — used by FreeRTOS port */
-__attribute__((always_inline)) __STATIC_INLINE void __NVIC_EnableIRQ(IRQn_Type IRQn)
+__STATIC_FORCEINLINE void __NVIC_EnableIRQ(IRQn_Type IRQn)
 {
   if ((int32_t)(IRQn) >= 0) {
     NVIC->ISER[(((uint32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)IRQn) & 0x1FUL));
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE void __NVIC_DisableIRQ(IRQn_Type IRQn)
+__STATIC_FORCEINLINE void __NVIC_DisableIRQ(IRQn_Type IRQn)
 {
   if ((int32_t)(IRQn) >= 0) {
     NVIC->ICER[(((uint32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)IRQn) & 0x1FUL));
@@ -217,7 +219,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __NVIC_DisableIRQ(IRQn_Type 
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE void __NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
+__STATIC_FORCEINLINE void __NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
 {
   if ((int32_t)(IRQn) >= 0) {
     NVIC->IP[((uint32_t)IRQn)] = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & 0xFFUL);
@@ -226,7 +228,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __NVIC_SetPriority(IRQn_Type
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __NVIC_GetPriority(IRQn_Type IRQn)
+__STATIC_FORCEINLINE uint32_t __NVIC_GetPriority(IRQn_Type IRQn)
 {
   if ((int32_t)(IRQn) >= 0) {
     return ((uint32_t)NVIC->IP[((uint32_t)IRQn)] >> (8U - __NVIC_PRIO_BITS));
@@ -235,21 +237,21 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __NVIC_GetPriority(IRQn_
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE void __NVIC_SetPendingIRQ(IRQn_Type IRQn)
+__STATIC_FORCEINLINE void __NVIC_SetPendingIRQ(IRQn_Type IRQn)
 {
   if ((int32_t)(IRQn) >= 0) {
     NVIC->ISPR[(((uint32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)IRQn) & 0x1FUL));
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE void __NVIC_ClearPendingIRQ(IRQn_Type IRQn)
+__STATIC_FORCEINLINE void __NVIC_ClearPendingIRQ(IRQn_Type IRQn)
 {
   if ((int32_t)(IRQn) >= 0) {
     NVIC->ICPR[(((uint32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)IRQn) & 0x1FUL));
   }
 }
 
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __NVIC_GetPendingIRQ(IRQn_Type IRQn)
+__STATIC_FORCEINLINE uint32_t __NVIC_GetPendingIRQ(IRQn_Type IRQn)
 {
   if ((int32_t)(IRQn) >= 0) {
     return (uint32_t)((NVIC->ISPR[(((uint32_t)IRQn) >> 5UL)] & (1UL << (((uint32_t)IRQn) & 0x1FUL))) ? 1UL : 0UL);

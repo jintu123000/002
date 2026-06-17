@@ -5,6 +5,19 @@
 ;*                      (STM32F103C8T6 — 64KB Flash, 20KB RAM)
 ;*******************************************************************************/
 
+; Stack and Heap Configuration
+Stack_Size      EQU     0x00000400      ; 1 KB
+Heap_Size       EQU     0x00000200      ; 512 B
+
+                AREA    STACK, NOINIT, READWRITE, ALIGN=3
+Stack_Mem       SPACE   Stack_Size
+__initial_sp                            ; exported as initial stack pointer
+
+                AREA    HEAP, NOINIT, READWRITE, ALIGN=3
+__heap_base
+Heap_Mem        SPACE   Heap_Size
+__heap_limit
+
                 PRESERVE8
                 THUMB
 
@@ -228,6 +241,21 @@ USBWakeUp_IRQHandler
 
                 B       .
                 ENDP
+
+;*******************************************************************************
+; User Initial Stack & Heap
+;*******************************************************************************
+                AREA    |.text|, CODE, READONLY
+
+                IMPORT  __use_two_region_memory
+                EXPORT  __user_initial_stackheap
+
+__user_initial_stackheap
+                LDR     R0, =  Heap_Mem
+                LDR     R1, =(Stack_Mem + Stack_Size)
+                LDR     R2, =(Heap_Mem + Heap_Size)
+                LDR     R3, = Stack_Mem
+                BX      LR
 
                 ALIGN
                 END
